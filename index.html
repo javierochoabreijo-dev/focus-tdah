@@ -227,6 +227,11 @@ a{color:var(--accent);}
 .bank-item-info{flex:1;min-width:0;}
 .bank-item-name{font-size:13px;font-weight:500;color:var(--fg);margin-bottom:2px;}
 .bank-item-desc{font-size:12px;color:var(--fg2);line-height:1.5;}
+.bank-item{cursor:pointer;flex-wrap:wrap;}
+.bank-item-detail{display:none;flex-basis:100%;margin-top:8px;font-size:12px;color:var(--fg2);line-height:1.5;}
+.bank-item.open .bank-item-detail{display:block;}
+.bank-item.open .bank-item-desc{display:none;}
+.bank-item-detail ol{margin:6px 0 0 18px;padding:0;}
 .bank-item-meta{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;align-items:flex-start;padding-top:2px;}
 
 /* FOOTER */
@@ -856,14 +861,19 @@ function buildBank() {
     const catInfo = CATS[cat];
     const items = BANK.filter(e => e.cat === cat);
     const itemsHtml = items.map(ex => `
-      <div class="bank-item">
+      <div class="bank-item" onclick="this.classList.toggle('open')">
         <div class="bank-item-info">
           <div class="bank-item-name">${ex.name}</div>
-          <div class="bank-item-desc">${ex.desc.substring(0,90)}…</div>
+          <div class="bank-item-desc">${ex.desc.length > 90 ? ex.desc.substring(0,90) + '…' : ex.desc}</div>
         </div>
         <div class="bank-item-meta">
           <span class="level-badge ${levelClass(ex.level)}">${levelLabel(ex.level)}</span>
           <span class="tag ${ex.freq==='Diario'?'tag-f':'tag-w'} tag" style="font-size:10px">${ex.freq}</span>
+        </div>
+        <div class="bank-item-detail">
+          <div>${ex.why}</div>
+          <p>${ex.desc}</p>
+          <ol>${ex.steps.map(st => `<li>${st}</li>`).join('')}</ol>
         </div>
       </div>`).join('');
     html += `
@@ -880,13 +890,15 @@ function toggleBankBody() {
   bankOpen = !bankOpen;
   document.getElementById('bankBody').classList.toggle('open', bankOpen);
   document.getElementById('bankChev').style.transform = bankOpen ? 'rotate(180deg)' : '';
+  document.getElementById('bankBtn').classList.toggle('active', bankOpen);
 }
 
 function toggleBank() {
-  const section = document.getElementById('bankSection');
-  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  if (!bankOpen) { bankOpen = true; document.getElementById('bankBody').classList.add('open'); document.getElementById('bankChev').style.transform = 'rotate(180deg)'; }
+  bankOpen = !bankOpen;
+  document.getElementById('bankBody').classList.toggle('open', bankOpen);
+  document.getElementById('bankChev').style.transform = bankOpen ? 'rotate(180deg)' : '';
   document.getElementById('bankBtn').classList.toggle('active', bankOpen);
+  if (bankOpen) document.getElementById('bankSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ══════════════════════════════════════════
