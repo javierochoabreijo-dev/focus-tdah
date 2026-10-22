@@ -1,0 +1,989 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Focus TDAH</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --bg:        #0f0e11;
+  --bg2:       #1a1820;
+  --bg3:       #231f2e;
+  --fg:        #f0ecff;
+  --fg2:       #a89dc4;
+  --fg3:       #6b6185;
+  --accent:    #9b7fff;
+  --accent-bg: #2a2040;
+  --success:   #4dbb8a;
+  --success-bg:#0f2e20;
+  --warn:      #e8a04a;
+  --warn-bg:   #2e1f07;
+  --border:    #2e2840;
+  --radius-sm: 8px;
+  --radius:    14px;
+  --radius-lg: 20px;
+  color-scheme: dark;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:#f7f5ff;--bg2:#ffffff;--bg3:#ede9ff;--fg:#1a1525;--fg2:#5a4e7a;--fg3:#9b8fc0;
+    --accent:#7c5fe6;--accent-bg:#ede8ff;--success:#1d8a5e;--success-bg:#e3f7ee;
+    --warn:#c47a10;--warn-bg:#fdf2de;--border:#ddd6f7;color-scheme:light;
+  }
+}
+:root[data-theme="light"] {
+  --bg:#f7f5ff;--bg2:#ffffff;--bg3:#ede9ff;--fg:#1a1525;--fg2:#5a4e7a;--fg3:#9b8fc0;
+  --accent:#7c5fe6;--accent-bg:#ede8ff;--success:#1d8a5e;--success-bg:#e3f7ee;
+  --warn:#c47a10;--warn-bg:#fdf2de;--border:#ddd6f7;color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--fg);
+  font-size:15px;line-height:1.6;min-height:100%;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+button{font-family:var(--sans);cursor:pointer;}
+a{color:var(--accent);}
+
+.page{max-width:660px;margin:0 auto;padding-block:48px 80px;}
+
+/* HEADER */
+.header{margin-bottom:40px;}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+.site-name{font-size:22px;font-weight:600;letter-spacing:-0.02em;}
+.site-name span{color:var(--accent);}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.theme-btn,.bank-toggle-btn{
+  background:var(--bg3);border:1px solid var(--border);color:var(--fg2);
+  border-radius:var(--radius-sm);padding:6px 12px;font-size:13px;font-weight:500;transition:background .15s;
+}
+.theme-btn:hover,.bank-toggle-btn:hover{background:var(--border);}
+.bank-toggle-btn.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);}
+.tagline{font-size:14px;color:var(--fg2);max-width:480px;}
+
+/* STREAK */
+.streak-row{
+  display:flex;align-items:center;gap:10px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px 16px;margin-bottom:32px;flex-wrap:wrap;
+}
+.streak-label{font-size:13px;color:var(--fg2);flex:1;}
+.streak-days{display:flex;gap:5px;}
+.streak-dot{
+  width:24px;height:24px;border-radius:6px;background:var(--bg3);
+  border:1px solid var(--border);font-size:10px;display:flex;
+  align-items:center;justify-content:center;color:var(--fg3);
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+}
+.streak-dot.done{background:var(--success-bg);border-color:var(--success);color:var(--success);}
+.streak-dot.today{border-color:var(--accent);}
+
+/* SECTION */
+.section{margin-bottom:40px;}
+.section-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.section-title{font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg2);}
+.section-badge{margin-left:auto;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--bg3);color:var(--fg2);}
+
+/* LEVEL BADGE */
+.level-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;font-family:var(--mono);font-weight:500;
+  padding:2px 6px;border-radius:4px;
+  background:var(--bg3);color:var(--fg3);border:1px solid var(--border);
+}
+.level-badge.lv1{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+.level-badge.lv2{background:var(--accent-bg);color:var(--accent);border-color:var(--accent);}
+.level-badge.lv3{background:var(--warn-bg);color:var(--warn);border-color:var(--warn);}
+
+/* EXERCISE CARD */
+.ex-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color .15s;
+}
+.ex-card:hover{border-color:var(--fg3);}
+.ex-card.open{border-color:var(--accent);}
+.ex-card.done .ex-name{color:var(--fg2);text-decoration:line-through;text-decoration-color:var(--fg3);}
+
+.ex-head{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;}
+.ex-done-btn{
+  width:22px;height:22px;border-radius:50%;border:1.5px solid var(--fg3);
+  background:transparent;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:11px;transition:all .15s;color:transparent;
+}
+.ex-card.done .ex-done-btn{background:var(--success);border-color:var(--success);color:#fff;}
+.ex-name{font-size:14px;font-weight:500;flex:1;color:var(--fg);}
+.ex-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;}
+.tag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;font-family:var(--mono);}
+.tag-f{background:var(--success-bg);color:var(--success);}
+.tag-t{background:var(--accent-bg);color:var(--accent);}
+.tag-w{background:var(--warn-bg);color:var(--warn);}
+.chev{font-size:12px;color:var(--fg3);transition:transform .2s;flex-shrink:0;}
+.ex-card.open .chev{transform:rotate(180deg);}
+
+.ex-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.ex-card.open .ex-body{display:block;}
+
+.ex-why{
+  font-size:12px;color:var(--accent);background:var(--accent-bg);
+  border-radius:var(--radius-sm);padding:6px 10px;margin-top:12px;margin-bottom:10px;line-height:1.5;
+}
+.ex-desc{font-size:13px;color:var(--fg2);margin-bottom:12px;line-height:1.6;}
+
+.steps{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.step{display:flex;gap:10px;align-items:flex-start;}
+.step-n{
+  width:20px;height:20px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);
+  font-size:10px;font-family:var(--mono);color:var(--fg2);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.step-text{font-size:13px;color:var(--fg);line-height:1.55;}
+
+/* TIMER */
+.timer-wrap{
+  background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.timer-display{font-family:var(--mono);font-size:24px;font-weight:500;color:var(--fg);min-width:64px;font-variant-numeric:tabular-nums;}
+.timer-display.running{color:var(--accent);}
+.timer-display.done-t{color:var(--success);}
+.timer-btns{display:flex;gap:7px;flex-wrap:wrap;}
+.timer-btn{
+  background:var(--bg2);border:1px solid var(--border);color:var(--fg);
+  border-radius:var(--radius-sm);padding:5px 12px;font-size:12px;font-weight:500;
+  transition:background .12s,border-color .12s;
+}
+.timer-btn:hover{background:var(--bg3);border-color:var(--fg3);}
+.timer-btn.primary{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);}
+.timer-btn.primary:hover{background:var(--accent);color:var(--bg);}
+.timer-presets{display:flex;gap:5px;flex-wrap:wrap;}
+.preset-btn{
+  background:transparent;border:1px solid var(--border);color:var(--fg3);
+  border-radius:var(--radius-sm);padding:3px 8px;font-size:11px;font-family:var(--mono);transition:all .12s;
+}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent);}
+.preset-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+
+/* TIP BOX */
+.tip-box{
+  background:var(--warn-bg);border:1px solid var(--warn);border-radius:var(--radius);
+  padding:14px 16px;font-size:13px;color:var(--fg);line-height:1.6;margin-top:16px;
+}
+.tip-box strong{color:var(--warn);}
+
+/* DAILY LOG */
+.log-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-top:40px;}
+.log-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+.log-subtitle{font-size:13px;color:var(--fg2);margin-bottom:16px;}
+.log-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;}
+.log-pill{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;
+  transition:all .15s;user-select:none;text-align:left;
+}
+.log-pill:hover{border-color:var(--fg3);}
+.log-pill.done{background:var(--success-bg);border-color:var(--success);}
+.log-pill-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--fg3);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;color:transparent;}
+.log-pill.done .log-pill-check{background:var(--success);border-color:var(--success);color:#fff;}
+.log-pill-name{font-size:13px;font-weight:500;color:var(--fg2);}
+.log-pill.done .log-pill-name{color:var(--success);}
+.log-progress{margin-top:14px;display:flex;align-items:center;gap:12px;}
+.log-bar-wrap{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.log-bar{height:100%;background:var(--success);border-radius:3px;transition:width .3s ease;}
+.log-pct{font-family:var(--mono);font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums;min-width:36px;}
+
+/* BANK */
+.bank-section{
+  margin-top:40px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;
+}
+.bank-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;cursor:pointer;user-select:none;
+  border-bottom:1px solid var(--border);
+}
+.bank-header-title{font-size:15px;font-weight:600;}
+.bank-header-sub{font-size:13px;color:var(--fg2);}
+.bank-body{display:none;padding:20px;}
+.bank-body.open{display:block;}
+.bank-cat{margin-bottom:24px;}
+.bank-cat:last-child{margin-bottom:0;}
+.bank-cat-title{
+  font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--fg3);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.bank-item{
+  display:flex;align-items:flex-start;gap:10px;padding:8px 0;
+  border-bottom:1px solid var(--border);
+}
+.bank-item:last-child{border-bottom:none;}
+.bank-item-info{flex:1;min-width:0;}
+.bank-item-name{font-size:13px;font-weight:500;color:var(--fg);margin-bottom:2px;}
+.bank-item-desc{font-size:12px;color:var(--fg2);line-height:1.5;}
+.bank-item-meta{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;align-items:flex-start;padding-top:2px;}
+
+/* FOOTER */
+.footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--fg3);text-align:center;}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;}}
+</style>
+
+<div class="page">
+
+  <header class="header">
+    <div class="header-top">
+      <div class="site-name">Focus<span>·</span>TDAH</div>
+      <div class="header-actions">
+        <button class="bank-toggle-btn" id="bankBtn" onclick="toggleBank()">📚 Banco</button>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Claro</button>
+      </div>
+    </div>
+    <p class="tagline">Rehabilitación cognitiva para TDAH. 4 ejercicios por día, rotados del banco automáticamente.</p>
+  </header>
+
+  <div class="streak-row">
+    <span class="streak-label">Racha semanal</span>
+    <div class="streak-days" id="streakDays"></div>
+  </div>
+
+  <div id="dailySections"></div>
+
+  <div class="tip-box">
+    <strong>Clave de adherencia:</strong> Vincula los ejercicios a una rutina existente (después del café, antes de dormir). En días de mucha carga emocional, hacer 1 ejercicio es suficiente — mejor poco que nada. Los ejercicios rotan cada día automáticamente.
+  </div>
+
+  <div class="log-section">
+    <div class="log-title">Registro del día</div>
+    <div class="log-subtitle" id="logDate">Cargando…</div>
+    <div class="log-grid" id="logGrid"></div>
+    <div class="log-progress">
+      <div class="log-bar-wrap"><div class="log-bar" id="logBar" style="width:0%"></div></div>
+      <div class="log-pct" id="logPct">0 / 4</div>
+    </div>
+  </div>
+
+  <div class="bank-section" id="bankSection">
+    <div class="bank-header" onclick="toggleBankBody()">
+      <div>
+        <div class="bank-header-title">📚 Banco de ejercicios</div>
+        <div class="bank-header-sub">24 ejercicios en 4 categorías</div>
+      </div>
+      <span class="chev" id="bankChev">▼</span>
+    </div>
+    <div class="bank-body" id="bankBody"></div>
+  </div>
+
+  <footer class="footer">
+    Focus·TDAH — ejercicios adaptados de protocolos de rehabilitación neuropsicológica.<br>
+    No reemplaza el tratamiento clínico o psicológico.
+  </footer>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   BANCO DE EJERCICIOS — 24 ejercicios, 6 por categoría
+   Cada uno: id, cat, name, why, desc, steps[], duration(s), level(1/2/3), freq
+   ══════════════════════════════════════════ */
+const BANK = [
+
+  /* ── VELOCIDAD DE PROCESAMIENTO ── */
+  {
+    id:'v1', cat:'vel', level:1,
+    name:'Lectura cronometrada',
+    why:'Entrena la velocidad de procesamiento visual-verbal desde la base.',
+    desc:'Lee un texto de 100–150 palabras lo más rápido que puedas sin perder comprensión. Luego responde de memoria.',
+    steps:[
+      'Elige un texto de 100–150 palabras (artículo, noticia, párrafo).',
+      'Lee en voz baja lo más rápido que puedas manteniendo comprensión. Usa el timer.',
+      'Sin releer: ¿de qué trató? ¿qué dato recuerdas?',
+      'Anota el tiempo. Apunta reducirlo 5–10 seg cada semana.'
+    ],
+    duration:10*60, freq:'Diario'
+  },
+  {
+    id:'v2', cat:'vel', level:1,
+    name:'Stroop casero',
+    why:'Ataca la lentitud inhibitoria — nombrar el color de la tinta, no la palabra.',
+    desc:'Escribe nombres de colores con tinta distinta al nombre. Nombra el color de la tinta, no lo que dice.',
+    steps:[
+      'Escribe: ROJO (en azul), AZUL (en verde), VERDE (en rojo). 10–15 palabras.',
+      'Nombra el COLOR de la tinta, no la palabra. Cronométrate.',
+      'Primero cero errores. Solo cuando seas consistente, añade velocidad.',
+      'Registra errores y tiempo. La mejora visible es el mejor motivador.'
+    ],
+    duration:5*60, freq:'Diario'
+  },
+  {
+    id:'v3', cat:'vel', level:2,
+    name:'Escaneo visual de grilla',
+    why:'Mejora la velocidad de búsqueda visual dirigida — lenta en TDAH.',
+    desc:'Busca un símbolo o letra específico dentro de una grilla densa, cronometrando cuánto tardas.',
+    steps:[
+      'Dibuja una grilla 8×8 y rellénala con letras al azar. Señala una letra objetivo.',
+      'Marca todas las apariciones de esa letra lo más rápido posible. Cronométrate.',
+      'Cuenta cuántas encontraste vs las reales. Calcula precisión.',
+      'Avanzar: reducir el tamaño de la letra, agregar símbolos similares como distractor.'
+    ],
+    duration:5*60, freq:'Diario'
+  },
+  {
+    id:'v4', cat:'vel', level:2,
+    name:'Copia de patrones',
+    why:'Entrena la velocidad perceptivo-motora — coordinar lo que ves con lo que escribes.',
+    desc:'Copia símbolos, figuras o texto en un tiempo límite. No se trata de caligrafía, sino de velocidad coordinada.',
+    steps:[
+      'Escribe 20 símbolos o letras en un papel. En otro papel, cópialos en orden.',
+      'Cronométrate. Anota errores y tiempo.',
+      'La semana siguiente, usa la misma grilla y compara el tiempo.',
+      'Avanzar: mezclar letras, números y símbolos en la misma grilla.'
+    ],
+    duration:5*60, freq:'3×/sem'
+  },
+  {
+    id:'v5', cat:'vel', level:3,
+    name:'Lectura en espejo',
+    why:'Desafío extremo de procesamiento visual — fuerza al cerebro a trabajar más lento antes de acelerar.',
+    desc:'Lee un texto reflejado horizontalmente. Requiere desconectar la lectura automática.',
+    steps:[
+      'Escribe 3–4 líneas de texto normales. Sostenlas frente a un espejo.',
+      'Lee el texto reflejado en voz alta. Cronométrate.',
+      'Registra el tiempo y errores. El objetivo es fluidez, no velocidad.',
+      'Avanzar: usa texto más denso, o prueba leer de derecha a izquierda sin espejo.'
+    ],
+    duration:8*60, freq:'3×/sem'
+  },
+  {
+    id:'v6', cat:'vel', level:3,
+    name:'Stroop numérico',
+    why:'Versión avanzada del Stroop — incompatibilidad entre cantidad y número escrito.',
+    desc:'Se muestra un número (ej: "3") pero hay cuatro repeticiones. Debes responder cuántos hay, no qué dicen.',
+    steps:[
+      'Escribe en un papel: "2 2 2" (hay 3 doses). La respuesta correcta es 3, no 2.',
+      'Prepara 10 ejemplos similares. Respóndelos cronometrado.',
+      'Primero despacio y sin errores. Solo luego agrega velocidad.',
+      'Avanzar: hacer que otra persona cree los ejemplos para que no los anticipes.'
+    ],
+    duration:5*60, freq:'3×/sem'
+  },
+
+  /* ── MEMORIA DE TRABAJO ── */
+  {
+    id:'m1', cat:'mem', level:1,
+    name:'Dígitos inversos',
+    why:'Ejercita directamente la memoria a corto plazo verbal en tiempo real.',
+    desc:'Alguien dice una secuencia de números. La repites al revés, sin escribirla.',
+    steps:[
+      'Empezar con 3 dígitos: 5–1–8 → responder: 8–1–5.',
+      'Si aciertas 3 seguidos, subir a 4 dígitos. Si fallas, bajar.',
+      'Variar con letras o palabras cortas para no mecanizar.',
+      'Máximo 10 min. El músculo cognitivo se fatiga rápido.'
+    ],
+    duration:5*60, freq:'Diario'
+  },
+  {
+    id:'m2', cat:'mem', level:1,
+    name:'Instrucciones en cadena',
+    why:'Simula el déficit real: seguir instrucciones de varias partes sin releerlas.',
+    desc:'Alguien da 2–3 pasos de instrucción. Los ejecutas sin notas. Al fallar: no repetir — preguntar qué recuerdas.',
+    steps:[
+      'Empezar con 2 pasos: "Ve a la cocina, trae un vaso y ponlo en la mesa".',
+      'Si lo hace sin error, agregar un tercer paso la próxima vez.',
+      'Cuando falle, NO repetir. Preguntar: "¿qué recuerdas hasta ahora?"',
+      'Avanzar a instrucciones con condición: "si hay agua en el grifo…"'
+    ],
+    duration:10*60, freq:'3×/sem'
+  },
+  {
+    id:'m3', cat:'mem', level:2,
+    name:'Actualización de lista mental',
+    why:'Entrena la actualización continua en memoria de trabajo — actualizar datos sin perder el hilo.',
+    desc:'Escuchas una lista de números y debes reportar siempre los últimos N que escuchaste.',
+    steps:[
+      'Alguien lee números en voz alta, uno cada 2 segundos.',
+      'Tu tarea: reportar siempre los últimos 3 que escuchaste (n-back simple).',
+      'Empezar con los últimos 2. Subir a 3, luego 4.',
+      'Avanzar: hacer lo mismo con palabras de una categoría (frutas, animales).'
+    ],
+    duration:8*60, freq:'3×/sem'
+  },
+  {
+    id:'m4', cat:'mem', level:2,
+    name:'Cálculo mental encadenado',
+    why:'Retener números parciales mientras se calcula — carga directa sobre la memoria de trabajo.',
+    desc:'Resolver operaciones de 3 pasos mentalmente, sin papel.',
+    steps:[
+      'Empezar: 7 + 4 = 11. Ahora × 3 = 33. Ahora − 8 = ?',
+      'Cronométrate. La respuesta correcta es 25.',
+      'Aumentar complejidad: más pasos, números más grandes.',
+      'Avanzar: pedir a alguien que invente las cadenas para que no sean predecibles.'
+    ],
+    duration:5*60, freq:'Diario'
+  },
+  {
+    id:'m5', cat:'mem', level:3,
+    name:'Retención con interferencia',
+    why:'El déficit real ocurre cuando hay distracción. Esto lo simula directamente.',
+    desc:'Memoriza una lista. Realiza otra tarea breve. Recupera la lista original.',
+    steps:[
+      'Memoriza 5 palabras no relacionadas. Cierra los ojos 30 segundos.',
+      'Durante esos 30 segundos: cuenta hacia atrás desde 50 de 3 en 3.',
+      'Al terminar: recita las 5 palabras originales.',
+      'Avanzar: 7 palabras, 60 segundos de interferencia, tarea más compleja.'
+    ],
+    duration:8*60, freq:'3×/sem'
+  },
+  {
+    id:'m6', cat:'mem', level:3,
+    name:'Doble tarea',
+    why:'Entrena la capacidad de mantener dos flujos mentales simultáneos — habilidad ejecutiva avanzada.',
+    desc:'Realiza dos tareas simples al mismo tiempo, sin abandonar ninguna.',
+    steps:[
+      'Tarea 1: recitar el alfabeto en voz alta, lento.',
+      'Tarea 2: simultáneamente, contar cuántos pasos das mientras caminas.',
+      'Objetivo: no detenerse en ninguna de las dos. Registrar errores.',
+      'Avanzar: cambiar las tareas (sumar y recordar lista, o deletrear y contar).'
+    ],
+    duration:8*60, freq:'3×/sem'
+  },
+
+  /* ── CONTROL INHIBITORIO ── */
+  {
+    id:'c1', cat:'inh', level:1,
+    name:'Pausa deliberada',
+    why:'Micro-hábito de 3 segundos que frena la respuesta automática antes de actuar.',
+    desc:'Antes de cualquier acción impulsiva: contar 3 segundos. Verificar si es lo que querías.',
+    steps:[
+      'Antes de enviar un mensaje, hacer clic, o responder: contar 3 segundos.',
+      '"¿Esto es lo que quiero hacer, o es automático?"',
+      'Si la respuesta es la misma, proceder. Si hay duda, esperar un minuto.',
+      'Aplicar especialmente en situaciones de frustración o estrés.'
+    ],
+    duration:3, freq:'Todo el día'
+  },
+  {
+    id:'c2', cat:'inh', level:1,
+    name:'Alternancia de categorías',
+    why:'Entrena flexibilidad cognitiva — cambiar de regla mental sin confundirse.',
+    desc:'Dos tareas de categorización que alternan con una señal. El reto es el cambio de contexto, no las tareas.',
+    steps:[
+      'Tarea A: nombrar animales. Tarea B: nombrar frutas.',
+      'Alternar cada vez que suena una alarma (empezar con 60 seg).',
+      'Registrar cuántos items nombraste en cada ronda sin repetir.',
+      'Avanzar: reducir el intervalo a 30 seg, o usar categorías semánticamente cercanas.'
+    ],
+    duration:10*60, freq:'3×/sem'
+  },
+  {
+    id:'c3', cat:'inh', level:2,
+    name:'Go / No-Go casero',
+    why:'El déficit en Go/No-Go es marcador clínico del TDAH — entrenarlo directamente tiene efecto real.',
+    desc:'Responde a un estímulo "Go" lo más rápido posible y NO respondas a "No-Go". La clave es frenar a tiempo.',
+    steps:[
+      'Acuerda señales con alguien: palmas = Go (da un golpe); silbido = No-Go (quieto).',
+      'La persona hace las señales en orden aleatorio, rápido. Tú reaccionas.',
+      'Contar falsas alarmas (reaccionar a No-Go) y omisiones (no reaccionar a Go).',
+      'Avanzar: reducir el intervalo entre señales a menos de 1 segundo.'
+    ],
+    duration:5*60, freq:'3×/sem'
+  },
+  {
+    id:'c4', cat:'inh', level:2,
+    name:'Clasificación con regla cambiante',
+    why:'La dificultad no es la tarea — es cambiar la regla sin que el cerebro siga la anterior.',
+    desc:'Clasifica cartas o fichas según una regla. Cuando se cambia la regla, debes ignorar el criterio anterior.',
+    steps:[
+      'Prepara fichas de distintos colores y formas. Regla 1: ordenar por COLOR.',
+      'Sin aviso, cambiar a Regla 2: ordenar por FORMA. No explicar el cambio.',
+      'Registrar cuánto tarda en adaptarse (errores perseverativos = intentos con la regla vieja).',
+      'Avanzar: agregar una tercera regla (número de objetos o tamaño).'
+    ],
+    duration:10*60, freq:'3×/sem'
+  },
+  {
+    id:'c5', cat:'inh', level:3,
+    name:'Supresión de pensamiento dirigido',
+    why:'Entrena el control metacognitivo — dejar de pensar en algo que tiende a repetirse.',
+    desc:'Se te da un pensamiento "intruso". Debes mantener la mente en otra tarea sin volver a él.',
+    steps:[
+      'Alguien te da un tema prohibido: "no pienses en un oso polar".',
+      'Durante 5 min, realiza una tarea simple (colorear, ordenar). Cada vez que pienses en ello, márcalo.',
+      'Objetivo: reducir las marcas día a día con la misma consigna.',
+      'Avanzar: usa pensamientos que realmente se repitan en tu vida cotidiana.'
+    ],
+    duration:5*60, freq:'3×/sem'
+  },
+  {
+    id:'c6', cat:'inh', level:3,
+    name:'Tiempo de reacción selectiva',
+    why:'Discriminación rápida bajo presión — el cerebro debe inhibir la respuesta incorrecta en milisegundos.',
+    desc:'Reacciona a estímulos visuales o auditivos específicos. Ignora los que no cumplen la condición.',
+    steps:[
+      'Acuerda regla: "golpea solo cuando escuches un número par". La persona dice números a ritmo rápido.',
+      'Registrar tiempo de reacción y errores durante 3 minutos.',
+      'Semana siguiente: agregar una segunda condición (par Y mayor que 5).',
+      'Avanzar: combinar modalidades (audio Y visual deben coincidir para responder).'
+    ],
+    duration:5*60, freq:'3×/sem'
+  },
+
+  /* ── MEMORIA VERBAL A LARGO PLAZO ── */
+  {
+    id:'p1', cat:'ver', level:1,
+    name:'Codificación elaborada',
+    why:'Codificar más profundo = recordar más fácil. El cerebro recuerda conexiones, no datos aislados.',
+    desc:'No memorizar leyendo — conectar lo nuevo con algo que ya sabes. Una asociación absurda funciona mejor.',
+    steps:[
+      'Al aprender algo nuevo: "¿a qué se parece esto que ya sé?"',
+      'Crea una imagen o frase absurda que una el dato nuevo con algo conocido.',
+      'Repite el dato 3 veces en voz alta con la asociación, no el dato solo.',
+      '30 min después, recupéralo sin releer. Si falla, refuerza la asociación.'
+    ],
+    duration:10*60, freq:'Diario'
+  },
+  {
+    id:'p2', cat:'ver', level:1,
+    name:'Resumen en voz alta',
+    why:'Hablar activa más circuitos de memoria que solo pensar. Consolida sin necesidad de releer.',
+    desc:'Al terminar cualquier actividad relevante: resumirla en voz alta 2 minutos. Estructura clara.',
+    steps:[
+      'Inmediatamente después del evento: hablar en voz alta 2 min.',
+      'Estructura: "Lo más importante fue… Decidimos… Necesito hacer…"',
+      'Al final del día: resume los 2–3 eventos más relevantes sin notas.',
+      'Las anotaciones van DESPUÉS del resumen oral. Confirman — no reemplazan.'
+    ],
+    duration:2*60, freq:'Diario'
+  },
+  {
+    id:'p3', cat:'ver', level:2,
+    name:'Repetición espaciada manual',
+    why:'La curva del olvido se detiene con repasos en momentos específicos. Sin esto, el 70% se pierde en 24 h.',
+    desc:'Revisar información aprendida en intervalos crecientes: 1 h, 24 h, 3 días, 1 semana.',
+    steps:[
+      'Después de aprender algo, anotar el dato en una tarjeta.',
+      'Repasar a las 1 h, 24 h, 3 días y 1 semana sin releer el material original.',
+      'En cada repaso: intenta recordar antes de voltear la tarjeta.',
+      'Si fallas en un repaso, reiniciar el ciclo desde 1 hora.'
+    ],
+    duration:10*60, freq:'Diario'
+  },
+  {
+    id:'p4', cat:'ver', level:2,
+    name:'Narración reconstructiva',
+    why:'Fuerza a reconstruir la memoria desde su estructura, no desde la repetición literal.',
+    desc:'Después de leer o escuchar algo, narra la historia en tus propias palabras cambiando el orden.',
+    steps:[
+      'Lee o escucha un relato corto (artículo, capítulo, conversación).',
+      'Sin notas, narra la historia comenzando por el final o por la mitad.',
+      'Luego narra en orden cronológico. Identifica qué partes olvidaste en cada versión.',
+      'Avanzar: narrar desde la perspectiva de otro personaje o con otra conclusión.'
+    ],
+    duration:10*60, freq:'3×/sem'
+  },
+  {
+    id:'p5', cat:'ver', level:3,
+    name:'Método de loci',
+    why:'El palacio de la memoria aprovecha la memoria espacial — más robusta que la verbal en TDAH.',
+    desc:'Asociar items a memorizar con lugares físicos de un camino conocido. Recorrer el camino mental para recuperar.',
+    steps:[
+      'Elige un camino que conozcas bien (tu casa, tu ruta al trabajo).',
+      'Asigna cada item a memorizar a un lugar específico del camino. Hazlo visual y raro.',
+      'Para recuperar: recorre el camino mentalmente y "ve" cada item en su lugar.',
+      'Avanzar: usar la misma ruta para diferentes listas, cambiando los items cada vez.'
+    ],
+    duration:15*60, freq:'3×/sem'
+  },
+  {
+    id:'p6', cat:'ver', level:3,
+    name:'Aprendizaje generativo',
+    why:'Generar el material tú mismo (ejemplos, analogías, preguntas) refuerza la huella de memoria.',
+    desc:'En lugar de leer pasivamente, generar tus propios ejemplos, preguntas y conexiones sobre lo aprendido.',
+    steps:[
+      'Después de aprender algo: escribe 3 ejemplos propios que no estén en el material.',
+      'Formula 2 preguntas que el material no responde. Intenta responderlas.',
+      'Encuentra 1 analogía con algo de tu vida cotidiana.',
+      'Avanzar: enseñarle el concepto a alguien más sin mirar tus notas.'
+    ],
+    duration:15*60, freq:'3×/sem'
+  }
+];
+
+/* ══════════════════════════════════════════
+   CATEGORÍAS
+   ══════════════════════════════════════════ */
+const CATS = {
+  vel: { name:'Velocidad de procesamiento', icon:'⚡', bg:'#2a1a10' },
+  mem: { name:'Memoria de trabajo',          icon:'🧠', bg:'#1a1040' },
+  inh: { name:'Control inhibitorio',         icon:'🔀', bg:'#0f1e2a' },
+  ver: { name:'Memoria verbal',              icon:'💬', bg:'#0a2018' }
+};
+const CAT_ORDER = ['vel','mem','inh','ver'];
+
+/* ══════════════════════════════════════════
+   SELECCIÓN DIARIA — determinista por fecha
+   ══════════════════════════════════════════ */
+function dayIndex() {
+  const d = new Date();
+  return Math.floor(d.getTime() / (1000 * 60 * 60 * 24));
+}
+
+// Para cada categoría, devuelve el ejercicio del nivel apropiado según racha
+function dailyExercises() {
+  const idx = dayIndex();
+  const selected = [];
+  CAT_ORDER.forEach(cat => {
+    const pool = BANK.filter(e => e.cat === cat);
+    const streak = getCategoryStreak(cat);
+    // nivel 1: racha < 5; nivel 2: racha 5-14; nivel 3: racha 15+
+    let targetLevel = streak >= 15 ? 3 : streak >= 5 ? 2 : 1;
+    let candidates = pool.filter(e => e.level === targetLevel);
+    if (!candidates.length) candidates = pool; // fallback
+    const pick = candidates[idx % candidates.length];
+    selected.push(pick);
+  });
+  return selected;
+}
+
+/* ══════════════════════════════════════════
+   LOCALSTORAGE
+   ══════════════════════════════════════════ */
+const todayKey = 'focus-done-' + new Date().toDateString();
+let doneSet = new Set();
+try { doneSet = new Set(JSON.parse(localStorage.getItem(todayKey) || '[]')); } catch(e) {}
+
+function saveDone() {
+  try { localStorage.setItem(todayKey, JSON.stringify([...doneSet])); } catch(e) {}
+}
+
+function getCategoryStreak(cat) {
+  let streak = 0;
+  const today = new Date();
+  for (let i = 1; i <= 60; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = 'focus-done-' + d.toDateString();
+    try {
+      const done = JSON.parse(localStorage.getItem(key) || '[]');
+      // verificar si se completó el ejercicio de esta categoría ese día
+      const exOfDay = BANK.filter(e => e.cat === cat);
+      const doneAny = exOfDay.some(e => done.includes(e.id));
+      if (doneAny) streak++;
+      else break;
+    } catch(e) { break; }
+  }
+  return streak;
+}
+
+/* ══════════════════════════════════════════
+   TIMERS
+   ══════════════════════════════════════════ */
+const timers = {};
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+}
+
+function startTimer(id, defaultSecs) {
+  if (!timers[id]) timers[id] = { remaining: defaultSecs, running: false, iv: null, def: defaultSecs };
+  const t = timers[id];
+  if (t.running) return;
+  t.running = true;
+  const el = document.getElementById('t-' + id);
+  if (el) el.classList.add('running');
+  t.iv = setInterval(() => {
+    t.remaining--;
+    if (el) el.textContent = fmtTime(Math.max(0, t.remaining));
+    if (t.remaining <= 0) {
+      clearInterval(t.iv); t.running = false;
+      if (el) { el.classList.remove('running'); el.classList.add('done-t'); el.textContent = '¡Listo!'; }
+    }
+  }, 1000);
+}
+
+function pauseTimer(id) {
+  if (!timers[id]) return;
+  clearInterval(timers[id].iv); timers[id].running = false;
+  const el = document.getElementById('t-' + id);
+  if (el) el.classList.remove('running');
+}
+
+function resetTimer(id) {
+  if (!timers[id]) return;
+  clearInterval(timers[id].iv); timers[id].running = false;
+  timers[id].remaining = timers[id].def;
+  const el = document.getElementById('t-' + id);
+  if (el) { el.textContent = fmtTime(timers[id].def); el.classList.remove('running','done-t'); }
+}
+
+function setPreset(id, secs, btn) {
+  if (!timers[id]) timers[id] = { remaining: secs, running: false, iv: null, def: secs };
+  timers[id].def = secs;
+  resetTimer(id);
+  btn.closest('.timer-presets').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════════
+   TOGGLE CARD
+   ══════════════════════════════════════════ */
+function toggleEx(id) {
+  document.querySelector(`[data-id="${id}"]`).classList.toggle('open');
+}
+
+function toggleDone(evt, id) {
+  evt.stopPropagation();
+  if (doneSet.has(id)) doneSet.delete(id);
+  else doneSet.add(id);
+  saveDone();
+  syncDoneUI();
+}
+
+function syncDoneUI() {
+  document.querySelectorAll('.ex-card[data-id]').forEach(card => {
+    card.classList.toggle('done', doneSet.has(card.dataset.id));
+  });
+  updateLog();
+}
+
+/* ══════════════════════════════════════════
+   RENDER EJERCICIO
+   ══════════════════════════════════════════ */
+function levelClass(n) { return ['','lv1','lv2','lv3'][n] || ''; }
+function levelLabel(n) { return ['','Nivel 1','Nivel 2','Nivel 3'][n] || ''; }
+
+function renderExCard(ex) {
+  const isDone = doneSet.has(ex.id);
+  const hasTimer = ex.duration && ex.duration > 3;
+
+  const stepsHtml = ex.steps.map((s,i) =>
+    `<div class="step"><div class="step-n">${i+1}</div><div class="step-text">${s}</div></div>`
+  ).join('');
+
+  let timerHtml = '';
+  if (hasTimer) {
+    const d = ex.duration;
+    const presets = [];
+    if (d > 60) {
+      const half = Math.round(d/2/60)*60;
+      if (half !== d) presets.push({ label: fmtTime(half), secs: half });
+    }
+    presets.push({ label: fmtTime(d), secs: d, active: true });
+    if (d < 20*60) presets.push({ label: fmtTime(d + (d < 60 ? 30 : 5*60)), secs: d + (d < 60 ? 30 : 5*60) });
+
+    const presetsHtml = presets.map(p =>
+      `<button class="preset-btn${p.active?' active':''}" onclick="setPreset('${ex.id}',${p.secs},this)">${p.label}</button>`
+    ).join('');
+
+    timerHtml = `
+      <div class="timer-wrap">
+        <div class="timer-display" id="t-${ex.id}">${fmtTime(d)}</div>
+        <div class="timer-btns">
+          <button class="timer-btn primary" onclick="startTimer('${ex.id}',${d})">Iniciar</button>
+          <button class="timer-btn" onclick="pauseTimer('${ex.id}')">Pausa</button>
+          <button class="timer-btn" onclick="resetTimer('${ex.id}')">Reset</button>
+        </div>
+        <div class="timer-presets">${presetsHtml}</div>
+      </div>`;
+  } else if (ex.duration <= 3) {
+    timerHtml = `
+      <div class="timer-wrap">
+        <div class="timer-display" id="t-${ex.id}">00:03</div>
+        <div class="timer-btns">
+          <button class="timer-btn primary" onclick="startTimer('${ex.id}',3)">Contar 3 seg</button>
+          <button class="timer-btn" onclick="resetTimer('${ex.id}')">Reset</button>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="ex-card${isDone?' done':''}" data-id="${ex.id}">
+      <div class="ex-head" onclick="toggleEx('${ex.id}')">
+        <button class="ex-done-btn" onclick="toggleDone(event,'${ex.id}')" aria-label="Marcar como hecho">✓</button>
+        <span class="ex-name">${ex.name}</span>
+        <div class="ex-tags">
+          <span class="tag ${ex.freq==='Diario'?'tag-f':ex.freq==='Todo el día'?'tag-f':'tag-w'}">${ex.freq}</span>
+          <span class="tag tag-t">${fmtTime(ex.duration || 0)}</span>
+          <span class="level-badge ${levelClass(ex.level)}">${levelLabel(ex.level)}</span>
+        </div>
+        <span class="chev">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="ex-why">${ex.why}</div>
+        <p class="ex-desc">${ex.desc}</p>
+        <div class="steps">${stepsHtml}</div>
+        ${timerHtml}
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   RENDER SECCIONES DIARIAS
+   ══════════════════════════════════════════ */
+function buildDailySections() {
+  const daily = dailyExercises();
+  const container = document.getElementById('dailySections');
+  let html = '';
+  daily.forEach(ex => {
+    const cat = CATS[ex.cat];
+    const streak = getCategoryStreak(ex.cat);
+    html += `
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon" style="background:${cat.bg}">${cat.icon}</div>
+          <span class="section-title">${cat.name}</span>
+          <span class="section-badge">${streak > 0 ? streak + ' día' + (streak>1?'s':'') + ' seguidos' : 'Hoy empezamos'}</span>
+        </div>
+        ${renderExCard(ex)}
+      </section>`;
+  });
+  container.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   BANCO COMPLETO
+   ══════════════════════════════════════════ */
+function buildBank() {
+  const body = document.getElementById('bankBody');
+  let html = '';
+  CAT_ORDER.forEach(cat => {
+    const catInfo = CATS[cat];
+    const items = BANK.filter(e => e.cat === cat);
+    const itemsHtml = items.map(ex => `
+      <div class="bank-item">
+        <div class="bank-item-info">
+          <div class="bank-item-name">${ex.name}</div>
+          <div class="bank-item-desc">${ex.desc.substring(0,90)}…</div>
+        </div>
+        <div class="bank-item-meta">
+          <span class="level-badge ${levelClass(ex.level)}">${levelLabel(ex.level)}</span>
+          <span class="tag ${ex.freq==='Diario'?'tag-f':'tag-w'} tag" style="font-size:10px">${ex.freq}</span>
+        </div>
+      </div>`).join('');
+    html += `
+      <div class="bank-cat">
+        <div class="bank-cat-title">${catInfo.icon} ${catInfo.name}</div>
+        ${itemsHtml}
+      </div>`;
+  });
+  body.innerHTML = html;
+}
+
+let bankOpen = false;
+function toggleBankBody() {
+  bankOpen = !bankOpen;
+  document.getElementById('bankBody').classList.toggle('open', bankOpen);
+  document.getElementById('bankChev').style.transform = bankOpen ? 'rotate(180deg)' : '';
+}
+
+function toggleBank() {
+  const section = document.getElementById('bankSection');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!bankOpen) { bankOpen = true; document.getElementById('bankBody').classList.add('open'); document.getElementById('bankChev').style.transform = 'rotate(180deg)'; }
+  document.getElementById('bankBtn').classList.toggle('active', bankOpen);
+}
+
+/* ══════════════════════════════════════════
+   STREAK SEMANAL
+   ══════════════════════════════════════════ */
+function buildStreak() {
+  const container = document.getElementById('streakDays');
+  const days = ['D','L','M','M','J','V','S'];
+  const today = new Date();
+  container.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = document.createElement('div');
+    d.className = 'streak-dot';
+    d.textContent = days[(today.getDay() - 6 + i + 7) % 7];
+    const dt = new Date(today); dt.setDate(today.getDate() - (6 - i));
+    try {
+      const saved = JSON.parse(localStorage.getItem('focus-done-' + dt.toDateString()) || '[]');
+      if (saved.length > 0) d.classList.add('done');
+    } catch(e) {}
+    if (i === 6) d.classList.add('today');
+    container.appendChild(d);
+  }
+}
+
+/* ══════════════════════════════════════════
+   DAILY LOG
+   ══════════════════════════════════════════ */
+function buildLog() {
+  const daily = dailyExercises();
+  const grid = document.getElementById('logGrid');
+  grid.innerHTML = '';
+  daily.forEach(ex => {
+    const pill = document.createElement('div');
+    pill.className = 'log-pill' + (doneSet.has(ex.id) ? ' done' : '');
+    pill.id = 'log-' + ex.id;
+    pill.onclick = () => {
+      if (doneSet.has(ex.id)) doneSet.delete(ex.id); else doneSet.add(ex.id);
+      saveDone(); syncDoneUI(); buildLog();
+    };
+    pill.innerHTML = `<div class="log-pill-check">✓</div><span class="log-pill-name">${ex.name}</span>`;
+    grid.appendChild(pill);
+  });
+}
+
+function updateLog() {
+  const daily = dailyExercises();
+  daily.forEach(ex => {
+    const pill = document.getElementById('log-' + ex.id);
+    if (pill) pill.classList.toggle('done', doneSet.has(ex.id));
+  });
+  const n = doneSet.size;
+  const total = daily.length;
+  const pct = total ? Math.round(n / total * 100) : 0;
+  document.getElementById('logBar').style.width = pct + '%';
+  document.getElementById('logPct').textContent = n + ' / ' + total;
+}
+
+/* ══════════════════════════════════════════
+   THEME
+   ══════════════════════════════════════════ */
+(function(){
+  try { const s = localStorage.getItem('focus-theme'); if (s) document.documentElement.setAttribute('data-theme', s); } catch(e) {}
+})();
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const next = isDark ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️ Claro' : '🌙 Oscuro';
+  try { localStorage.setItem('focus-theme', next); } catch(e) {}
+}
+
+(function(){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeBtn').textContent = isDark ? '☀️ Claro' : '🌙 Oscuro';
+})();
+
+/* ══════════════════════════════════════════
+   LOG DATE
+   ══════════════════════════════════════════ */
+function setLogDate() {
+  const str = new Date().toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
+  const el = document.getElementById('logDate');
+  if (el) el.textContent = str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════ */
+buildDailySections();
+buildStreak();
+buildLog();
+buildBank();
+setLogDate();
+syncDoneUI();
+</script>
+
+</body></html>
